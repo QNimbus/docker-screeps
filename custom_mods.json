@@ -1,0 +1,12 @@
+{
+  "mods": [
+  	"node_modules/screepsmod-mongo",
+  	"node_modules/screepsmod-auth",
+  	"node_modules/screepsmod-tickrate",
+  	"node_modules/screepsmod-admin-utils",
+  	"node_modules/screepsmod-feature"
+  ],
+  "bots": {
+    "simplebot": "node_modules/@screeps/simplebot/src"
+  }
+}
