@@ -1,25 +1,25 @@
 #!/bin/bash
 set -e
 
+cp -a /screeps.base/* /screeps/
+
 function init_srv(){
         echo "===== SETTING UP SCREEPS ====="
 
-	if [ -z "$STEAMKEY" ]; then
-        	echo "Did you forget to set the STEAMKEY environment variable?"
-        	exit 1
-    	else
-        	echo "initializing .screepsrc..."
+	cd /screeps
 
-		yarn init -y
-		yarn add screeps
+        if [ -z "$STEAMKEY" ]; then
+                echo "Did you forget to set the STEAMKEY environment variable?"
+                exit 1
+        else
+                echo "initializing .screepsrc..."
 
-        	# pass our steam key into the init process
-        	echo "${STEAMKEY}" | npx screeps init
+                yarn init -y
+                yarn add screeps
+
+                # pass our steam key into the init process
+                echo "${STEAMKEY}" | npx screeps init
         fi
-
-        npm install screepsmod-mongo screepsmod-auth screepsmod-tickrate screepsmod-admin-utils screepsmod-features
-
-	cp /custom_mods.json /screeps
 
         sed -i 's/modfile.*/modfile = custom_mods.json/' .screepsrc
 
@@ -48,4 +48,3 @@ case $1 in
                 exec "$@"
                 ;;
 esac
-

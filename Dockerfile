@@ -1,23 +1,42 @@
-FROM node:8.11.1-stretch
+FROM debian:jessie AS gosu
+
+RUN apt-get update && apt-get -y --no-install-recommends install \
+    ca-certificates \
+    curl \
+    wget
+
+ARG GOSU_VERSION=1.11
+RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+ && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+ && chmod +x /usr/local/bin/gosu \
+ && gosu nobody true 
+
+FROM node:8.11.1-stretch AS screeps
 ENV SCREEPS_VERSION 3.2.1
 WORKDIR /screeps
 RUN yarn add screeps@"$SCREEPS_VERSION"
+RUN npm install screepsmod-mongo screepsmod-tickrate screepsmod-auth
 
 FROM node:8.11.1-stretch
-COPY --from=0 /screeps /screeps
-
+VOLUME /screeps
 WORKDIR /screeps
+
+COPY --from=screeps /screeps /screeps.base
+
 ENV DB_PATH=/screeps/db.json ASSET_DIR=/screeps/assets \
-        MODFILE=/screeps/mods.json GAME_PORT=21025 \
+        MODFILE=/screeps/custom_mods.json GAME_PORT=21025 \
         GAME_HOST=0.0.0.0 CLI_PORT=21026 CLI_HOST=0.0.0.0 \
         STORAGE_PORT=21027 STORAGE_HOST=localhost \
         DRIVER_MODULE="@screeps/driver"
 
-COPY docker-entrypoint.sh /
-COPY custom_mods.json /
+COPY --from=gosu /usr/local/bin/gosu /usr/local/bin/gosu
+COPY custom_mods.json /screeps.base
+COPY start.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
 
-VOLUME /screeps
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/start.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh", "/usr/local/bin/start.sh"]
+HEALTHCHECK CMD curl -sSLf http://localhost:21025 >/dev/null || exit 1
 
 CMD ["run"]

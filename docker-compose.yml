@@ -1,15 +1,18 @@
-version: '2'
+version: '3.7'
 services:
     screeps:
         container_name: screeps
         image: qnimbus/docker-screeps
+        networks:
+          - screeps
         volumes:
           - /opt/screeps:/screeps
-        restart: always
+        restart: unless-stopped
         ports:
           - 21025:21025
           - 21026:21026
         environment:
+          - LOCAL_UID=1101
           - GAME_PORT=21025
           - CLI_PORT=21026
         depends_on:
@@ -18,12 +21,16 @@ services:
     mongo:
         container_name: mongo
         image: mongo
+        networks:
+          - screeps
         volumes:
           - mongo-volume:/data/db
         restart: always
     redis:
         container_name: redis
         image: redis
+        networks:
+          - screeps
         volumes:
           - redis-volume:/data
         restart: always
@@ -31,3 +38,8 @@ services:
 volumes:
     mongo-volume:
     redis-volume:
+
+networks:
+    screeps:
+      name: screeps_net 
+      driver: bridge

@@ -1,10 +1,8 @@
 {
   "mods": [
-  	"node_modules/screepsmod-mongo",
-  	"node_modules/screepsmod-auth",
-  	"node_modules/screepsmod-tickrate",
-  	"node_modules/screepsmod-admin-utils",
-  	"node_modules/screepsmod-feature"
+   "node_modules/screepsmod-mongo/index.js",
+   "node_modules/screepsmod-tickrate/index.js",
+   "node_modules/screepsmod-auth/index.js"
   ],
   "bots": {
     "simplebot": "node_modules/@screeps/simplebot/src"
