@@ -5,6 +5,7 @@
    "node_modules/screepsmod-auth/index.js"
   ],
   "bots": {
-    "simplebot": "node_modules/@screeps/simplebot/src"
+    "simplebot": "node_modules/@screeps/simplebot/src",
+    "bot-tooangel": "node_modules/screeps-bot-tooangel/src"
   }
 }
