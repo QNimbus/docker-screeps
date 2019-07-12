@@ -52,6 +52,12 @@ docker run --rm --name redis --network screeps_net -d -v redis-volume:/data redi
 ```bash
 docker run --rm --name mongo --network screeps_net -d -v mongo-volume:/data/db mongo
 ```
+### New screepsmod-mongo ###
+This runs screepsmond-mongo by default using the custom_mods.json file.  If kept, a new installation requires:
+```bash
+system.resetAllData()
+```
+to be ran from the Server CLI (See CLI section below) after installation is complete.
 
 ### Creating a password
 
