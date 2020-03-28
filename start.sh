@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 cp -a /screeps.base/* /screeps/
@@ -8,8 +8,8 @@ function init_srv(){
 
 	cd /screeps
 
-        if [ -z "$STEAMKEY" ]; then
-                echo "Did you forget to set the STEAMKEY environment variable?"
+        if [ -z "$STEAM_KEY" ]; then
+                echo "Did you forget to set the STEAM_KEY environment variable?"
                 exit 1
         else
                 echo "initializing .screepsrc..."
@@ -18,7 +18,7 @@ function init_srv(){
                 yarn add screeps
 
                 # pass our steam key into the init process
-                echo "${STEAMKEY}" | npx screeps init
+                echo "${STEAM_KEY}" | npx screeps init
         fi
 
         sed -i 's/modfile.*/modfile = custom_mods.json/' .screepsrc

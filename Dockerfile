@@ -7,27 +7,32 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 
 ARG GOSU_VERSION=1.11
 RUN dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
- && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
- && chmod +x /usr/local/bin/gosu \
- && gosu nobody true 
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+    && chmod +x /usr/local/bin/gosu \
+    && gosu nobody true 
 
-FROM node:8.11.1-stretch AS screeps
-ENV SCREEPS_VERSION 3.2.1
+FROM node:10.16.3-stretch AS screeps
+ENV SCREEPS_VERSION 4.0.4
 WORKDIR /screeps
 RUN yarn add screeps@"$SCREEPS_VERSION"
-RUN npm install screepsmod-mongo screepsmod-tickrate screepsmod-auth screeps-bot-tooangel
+RUN npm install screepsmod-mongo screepsmod-admin-utils screepsmod-auth screeps-bot-tooangel
 
-FROM node:8.11.1-stretch
+FROM node:10.16.3-stretch
 VOLUME /screeps
 WORKDIR /screeps
 
 COPY --from=screeps /screeps /screeps.base
 
-ENV DB_PATH=/screeps/db.json ASSET_DIR=/screeps/assets \
-        MODFILE=/screeps/custom_mods.json GAME_PORT=21025 \
-        GAME_HOST=0.0.0.0 CLI_PORT=21026 CLI_HOST=0.0.0.0 \
-        STORAGE_PORT=21027 STORAGE_HOST=localhost \
-        DRIVER_MODULE="@screeps/driver"
+ENV DB_PATH=/screeps/db.json \
+    ASSET_DIR=/screeps/assets \
+    MODFILE=/screeps/custom_mods.json \
+    GAME_PORT=21025 \
+    GAME_HOST=0.0.0.0 \
+    CLI_PORT=21026 \
+    CLI_HOST=0.0.0.0 \
+    STORAGE_PORT=21027 \
+    STORAGE_HOST=localhost \
+    DRIVER_MODULE="@screeps/driver"
 
 COPY --from=gosu /usr/local/bin/gosu /usr/local/bin/gosu
 COPY custom_mods.json /screeps.base
@@ -36,7 +41,7 @@ COPY entrypoint.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/start.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh", "/usr/local/bin/start.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 HEALTHCHECK CMD curl -sSLf http://localhost:21025 >/dev/null || exit 1
 
 CMD ["run"]
