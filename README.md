@@ -8,7 +8,7 @@ There are two different type how to start a screeps server.
 If you do not have an existing server directory, just start the Docker container with the command line argument `init`, and everything gets done for you. The `LOCAL_UID` environment variable ensures that the files that are created in the mounted volume have the correct owner set. You can enter any valid (host) uid here or use `$(id -u)` to use the current uid of the logged in user.
 
 ```bash
-docker run --rm -it -v $PWD:/screeps -e LOCAL_UID=$(id -u) -e STEAMKEY=YOUR_STEAM_KEY_HERE qnimbus/docker-screeps init
+docker run --rm -it -v $PWD:/screeps -e LOCAL_UID=$(id -u) -e STEAM_KEY=YOUR_STEAM_KEY_HERE qnimbus/docker-screeps init
 ```
 Now it's all set to run the Screeps server.
 
