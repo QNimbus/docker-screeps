@@ -63,7 +63,7 @@ docker network create --attachable -d "bridge" --subnet 172.28.0.0/16 screeps_ne
 
 *Note: The subnet can be changed to your individual needs as well as the network name ('screeps_net')*
 
-### <a name="mongo-redis"></a>Starting and running MongoDB and Redis
+### Starting and running MongoDB and Redis
 
 ```bash
 docker run --rm --name redis --network screeps_net -d -v redis-volume:/data redis
@@ -81,15 +81,27 @@ In order to push your code to your private server you need a password (using `sc
 ## Managing the server
 
 ### Mods
+
 Mods can be installed by running:
 ```bash
 docker run --rm -v ${PWD}:/screeps -e LOCAL_UID=$(id -u) qnimbus/docker-screeps yarn add screepsmod-auth
 ```
 ### CLI
+
 The CLI can be accessed by running:
+
 ```bash
 docker exec -it screeps npx screeps cli
 ```
+
+### Useful CLI commands
+
+To reset server state & data:
+
+```bash
+system.resetAllData()
+```
+
 
 ## Stopping and starting the server
 Stop:

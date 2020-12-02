@@ -33,6 +33,7 @@ ENV DB_PATH=/screeps/db.json \
     DRIVER_MODULE="@screeps/driver"
 
 COPY --from=gosu /usr/local/bin/gosu /usr/local/bin/gosu
+COPY config.yml /screeps.base
 COPY custom_mods.json /screeps.base
 COPY start.sh /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/

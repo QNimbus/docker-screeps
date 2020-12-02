@@ -5,15 +5,17 @@
 
 USER_ID=${LOCAL_UID:-9001}
 
-echo "Starting with UID : $USER_ID"
-useradd --shell /bin/bash -u $USER_ID -o -c "" -m user
-export HOME=/home/user
+# Create user if it doesn't already exist
+id -u ${USER_ID} >/dev/null 2>&1 || useradd --shell /bin/bash -u ${USER_ID} -o -c "" -m screeps
+
+echo "Starting with UID : ${USER_ID} (screeps)"
+export HOME=/home/screeps
 
 # Exit when error is encountered
 set -e
 
 # Set ownership of volume to user
-chown -R user /screeps
+chown -R screeps /screeps
 
 cd /screeps
-exec /usr/local/bin/gosu user start.sh "$@"
+exec /usr/local/bin/gosu screeps start.sh "$@"
