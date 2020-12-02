@@ -30,8 +30,6 @@ ENV DB_PATH=/screeps/db.json \
     GAME_HOST=0.0.0.0 \
     CLI_PORT=21026 \
     CLI_HOST=0.0.0.0 \
-    STORAGE_PORT=21027 \
-    STORAGE_HOST=localhost \
     DRIVER_MODULE="@screeps/driver"
 
 COPY --from=gosu /usr/local/bin/gosu /usr/local/bin/gosu

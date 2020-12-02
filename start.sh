@@ -23,6 +23,7 @@ function init_srv(){
         fi
 
         sed -i 's/modfile.*/modfile = custom_mods.json/' .screepsrc
+        sed -i 's/storage_disabled = false/storage_disabled = true/' .screepsrc
 
         # Add newline to .screepsrc if not already ending with newline
         [ -n "$(tail -c1 .screepsrc)" ] && echo >> .screepsrc
