@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Add local user
-# Either use the LOCAL_UID if passed in at runtime or fallback
+# Either use the LOCAL_UID if passed in at runtime or fallback to uid 9001
 
 USER_ID=${LOCAL_UID:-9001}
 

@@ -1,18 +1,26 @@
-# Screeps Server
+# Screeps Server <!-- omit in toc -->
 
-There are two different type how to start a screeps server.
+- [Create the world](#create-the-world)
+- [Running the server](#running-the-server)
+- [Additional setup steps](#additional-setup-steps)
+- [Managing the server](#managing-the-server)
+- [Stopping and starting the server](#stopping-and-starting-the-server)
+- [Updating](#updating)
+- [Troubleshooting](#troubleshooting)
+
+There are two different ways to start a screeps server.
 * [without a world](#create-the-world)
 * [with a world already created](#running-the-server)
 
-## <a name="create-the-world"></a>Create the world
-If you do not have an existing server directory, just start the Docker container with the command line argument `init`, and everything gets done for you. The `LOCAL_UID` environment variable ensures that the files that are created in the mounted volume have the correct owner set. You can enter any valid (host) uid here or use `$(id -u)` to use the current uid of the logged in user.
+## Create the world
+If you do not have an existing server directory, just start the Docker container with the command line argument `init`, and everything gets done for you. The `LOCAL_UID` environment variable ensures that the files that are created in the mounted volume have the correct owner set. You can enter any valid (host) uid here. When omitted the default uid is `9001`.
 
 ```bash
-docker run --rm -it -v $PWD:/screeps -e LOCAL_UID=$(id -u) -e STEAM_KEY=YOUR_STEAM_KEY_HERE qnimbus/docker-screeps init
+docker run --rm -it -v ${PWD}/screeps:/screeps -e LOCAL_UID=$(id -u) -e STEAM_KEY=YOUR_STEAM_KEY_HERE qnimbus/docker-screeps init
 ```
 Now it's all set to run the Screeps server.
 
-## <a name="running-the-server"></a>Running the server
+## Running the server
 Make sure you have a server directory (from aprevious installations or by running the 'init' command above).
 
 You can use 'docker-compose' to start the screeps server, create the screeps_net bridged network and start the redis and mongodb instances.
@@ -28,10 +36,22 @@ If you want to start each container manually follow the steps below.
 3. [Start mongo & redis containers](#mongo-redis)
 4. Run the server
 ```bash
-docker run --rm -it --name screeps --network screeps_net -v $PWD:/screeps -p 21025:21025 -d -e LOCAL_UID=$(id -u) qnimbus/docker-screeps
+docker run --rm -it --name screeps --network screeps_net -v ${PWD}/screeps:/screeps -p 21025:21025 -p 21026:21026 -d -e LOCAL_UID=$(id -u) qnimbus/docker-screeps
 ```
 
 ## Additional setup steps
+
+### Build your own container
+
+To build your own (customized) container locally, run the following command:
+
+```bash
+docker build . -t qnimbus/docker-screeps
+```
+
+### Getting Steam API key
+
+Navigate to [https://steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey) and generate or copy your Steam API key.
 
 ### <a name="creating-network"></a>Creating a bridged network for MongoDB and Redis
 
@@ -56,14 +76,14 @@ docker run --rm --name mongo --network screeps_net -d -v mongo-volume:/data/db m
 ### Creating a password
 
 In order to push your code to your private server you need a password (using `screepsmod-auth`) for your user. You can configure a password by pointing your browser at 
-`http://[private-server-ip]:21025/authmod/password/` or by typing `setPassword('your_password')` into the screeps console when logged in on the screeps client.
+[http://127.0.0.1:21025/authmod/password/](http://127.0.0.1:21025/authmod/password/) or by typing `setPassword('your_password')` into the screeps console when logged in on the screeps client.
 
 ## Managing the server
 
 ### Mods
 Mods can be installed by running:
 ```bash
-docker run --rm -v $PWD:/screeps qnimbus/docker-screeps yarn add screepsmod-auth
+docker run --rm -v ${PWD}:/screeps -e LOCAL_UID=$(id -u) qnimbus/docker-screeps yarn add screepsmod-auth
 ```
 ### CLI
 The CLI can be accessed by running:
@@ -86,3 +106,11 @@ Start:
 3. Remove current image 
   ```docker rmi qnimbus/docker-screeps```
 4. Follow [Running the server](#running-the-server)
+
+## Troubleshooting
+
+When running the docker commands from a Windows Git Bash shell (MSYS) you may need to prepend the `MSYS_NO_PATHCONV=1` environment variable to the commands, like so:
+
+```bash
+ MSYS_NO_PATHCONV=1 docker run --rm -it -v ${PWD}:/screeps -e LOCAL_UID=$(id -u) -e STEAM_KEY=YOUR_STEAM_KEY_HERE qnimbus/docker-screeps init
+```

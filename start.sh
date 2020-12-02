@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-cp -a /screeps.base/* /screeps/
 
 function init_srv(){
         echo "===== SETTING UP SCREEPS ====="
 
-	cd /screeps
+        cp -a /screeps.base/* /screeps/
+
+        cd /screeps
 
         if [ -z "$STEAM_KEY" ]; then
                 echo "Did you forget to set the STEAM_KEY environment variable?"

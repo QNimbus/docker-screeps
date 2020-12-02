@@ -15,7 +15,7 @@ FROM node:10.16.3-stretch AS screeps
 ENV SCREEPS_VERSION 4.2.3
 WORKDIR /screeps
 RUN yarn add screeps@"$SCREEPS_VERSION"
-RUN npm install screepsmod-mongo screepsmod-admin-utils screepsmod-auth screeps-bot-tooangel
+RUN yarn add screepsmod-mongo screepsmod-admin-utils screepsmod-auth screeps-bot-tooangel
 
 FROM node:10.16.3-stretch
 VOLUME /screeps
