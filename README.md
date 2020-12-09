@@ -102,6 +102,17 @@ To reset server state & data:
 system.resetAllData()
 ```
 
+You can create autonomous NPC bot players on your private server. They work as regular players, but you can specify their AI scripts in bots option at your mods.json file. Initially there is one AI loaded into your server, called simplebot, but you can always add more, and share with other players.
+
+To view all bot related command and list current active bots, type:
+
+```bash
+> help(bots);
+```
+
+```bash
+> bots.removeUser('JackBot'); // Take note: this is the actual bot instance name, not 'bot-tooangel' for example.
+```
 
 ## Stopping and starting the server
 Stop:
