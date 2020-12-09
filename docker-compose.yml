@@ -12,9 +12,10 @@ services:
       - 21025:21025
       - 21026:21026
     environment:
+      - LOCAL_UID=197609
       - GAME_PORT=21025
       - CLI_PORT=21026
-    restart: "no"
+    restart: unless-stopped
     depends_on:
       - mongo
       - redis
@@ -26,7 +27,7 @@ services:
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
-    restart: "no"
+    restart: unless-stopped
   redis:
     container_name: redis
     image: redis
@@ -34,7 +35,7 @@ services:
       - screeps
     volumes:
       - redis-data:/data
-    restart: "no"
+    restart: unless-stopped
 
 volumes:
   mongo-data:
