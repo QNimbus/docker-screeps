@@ -1,0 +1,7 @@
+---
+  serverConfig: # This section requires screepsmod-admin-utils to work
+    welcomeText: |
+      <h1 style="text-align: center; font-variant: small-caps;">welcome</h1>
+      <div style="text-align: center;">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quaerat unde architecto distinctio recusandae quis, laboriosam modi officia nostrum ipsam at?</div>
+      <div style="text-align: center; font-variant: small-caps; font-size: 14px; margin-top: 30px;">powered by screepsmod-admin-utils</div>
+    tickRate: 1500  # In milliseconds. This is a lower bound. Users reported problems when set too low.
